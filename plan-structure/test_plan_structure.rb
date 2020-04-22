@@ -29,16 +29,16 @@ File.delete(file_name) if File.exist?(file_name)
 
   create_tabl_plan_structure
                             
-  keep_data_to_db
+  keep_data_to_db_plstr
 
   delete_tabl_plan_structure
 
   create_tabl_plan_structure
                             
-  keep_data_to_db
+  keep_data_to_db_plstr
 
   delete_data_from_tabl_plan_structure
 
-  keep_data_to_db
+  keep_data_to_db_plstr
         
 @db.close

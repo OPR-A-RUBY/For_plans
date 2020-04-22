@@ -33,7 +33,7 @@
      puts "\n===>> Таблица 'plan_structure' создана" 
   end
 
-  def keep_data_to_db
+  def keep_data_to_db_plstr
 
     file = File.open 'plan_structure.txt', 'r'
     s = 0

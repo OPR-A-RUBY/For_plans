@@ -1,8 +1,8 @@
 # ====================================================================================================
-#                                                               Это TEST для таблици "plan-structure" 
+#                                                             Это TEST для таблици "enet-structure-ps" 
 # ====================================================================================================
 
-# _____________________________________________________________________ PLAN-STRUCTURE ____ TABL ______
+# _________________________________________________________________ ENET-STRUCTURE-PS ____ TABL ______
 #         id - идентификатор
 #       year - год планирования              (integer)    - 2021
 #       name - наименование строки           (text)       - Ремонт разъединителей 110 кВ
@@ -17,7 +17,7 @@
 
 require 'sqlite3'
 
-require_relative 'a_plan_structure'
+require_relative 'a_enet_structure_ps'
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -27,18 +27,18 @@ File.delete(file_name) if File.exist?(file_name)
 
 @db = SQLite3::Database.new file_name
 
-  create_tabl_plan_structure
+  create_tabl_enet_structure_ps
                             
-  keep_data_to_db
+  keep_data_to_db_enps
 
-  delete_tabl_plan_structure
+  delete_tabl_enet_structure_ps
 
-  create_tabl_plan_structure
+  create_tabl_enet_structure_ps
                             
-  keep_data_to_db
+  keep_data_to_db_enps
 
-  delete_data_from_tabl_plan_structure
+  delete_data_from_tabl_enet_structure_ps
 
-  keep_data_to_db
+  keep_data_to_db_enps
         
 @db.close

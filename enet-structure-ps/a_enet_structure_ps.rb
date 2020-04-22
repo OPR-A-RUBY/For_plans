@@ -15,9 +15,9 @@
 #       code - код многомиллиардный          (text)       - 001-002-001-003-000
 #
 
-  def create_tabl_plan_structure
+  def create_tabl_enet_structure_ps
     @db.execute 'CREATE TABLE IF NOT EXISTS       
-        "plan_structure" 
+        "enet_structure_ps" 
         (
             "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             "year" INTEGER,
@@ -30,19 +30,19 @@
             "eiz" TEXT,
             "code" TEXT
         )'
-     puts "\n===>> Таблица 'plan_structure' создана" 
+     puts "\n===>> 'enet_structure_ps' - Таблица создана" 
   end
 
-  def keep_data_to_db
+  def keep_data_to_db_enps
 
-    file = File.open 'plan_structure.txt', 'r'
+    file = File.open 'enet_structure_ps.txt', 'r'
     s = 0
     
     file.each_line do |line|
       s += 1;
       data = line.split(/;/)
 
-      @db.execute 'INSERT INTO plan_structure 
+      @db.execute 'INSERT INTO enet_structure_ps 
           (
               year,
               name,
@@ -73,21 +73,19 @@
     end
 
     file.close
-    puts "\n===>> Данные в таблицу 'plan_structure' внесены. (#{s} элементов)"
+    puts "\n===>> Данные в таблицу 'enet_structure_ps' внесены. (#{s} элементов)"
   end  
 
-  def delete_data_from_tabl_plan_structure
+  def delete_data_from_tabl_enet_structure_ps
 
-    @db.execute 'DELETE FROM plan_structure;'
-    puts "\n===>> Данные из таблицы 'plan_structure' удалены."
+    @db.execute 'DELETE FROM enet_structure_ps;'
+    puts "\n===>> Данные из таблицы 'enet_structure_ps' удалены."
   
   end
   
-  def delete_tabl_plan_structure
+  def delete_tabl_enet_structure_ps
 
-    @db.execute 'DROP TABLE IF EXISTS plan_structure'
-    puts "\n===>> Tаблица 'plan_structure' удалена."
+    @db.execute 'DROP TABLE IF EXISTS enet_structure_ps'
+    puts "\n===>> Tаблица 'enet_structure_ps' удалена."
 
   end  
-
-  

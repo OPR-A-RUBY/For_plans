@@ -1,6 +1,8 @@
 *.gem
 *.rbc
 *.sqlite
+silovoe_ps.xls
+spp_all.xls
 /.config
 /coverage/
 /InstalledFiles
