@@ -1,0 +1,6 @@
+
+Обучение всему, что модет SQLITE
+https://www.tutorialspoint.com/sqlite/sqlite_commands.htm
+
+Обучение камандам запросов к БД
+http://www.sqlishard.com/
