@@ -2,44 +2,90 @@
 #
 #
 
-require 'spreadsheet'
+def input_sap_data
 
-filename = "control_nom.xls"    
+  @db.execute 'CREATE TABLE IF NOT EXISTS       
+        "sap_data" 
+        (
+                "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+              "code" TEXT,
+               "spp" TEXT,
+            "numz_r" TEXT,
+            "numz_z" TEXT,
+             "names" TEXT,
+                "ei" TEXT,
+             "date1" TEXT,
+             "date2" TEXT,
+               "atm" TEXT
+        )'
+                                          puts "\n===>> Таблица создана - 'sap_data'" 
 
-book = Spreadsheet.open(filename)
+  filename = "control_nom.xls"    
 
-sheet1 = book.worksheet('SAP-21') # can use an index or worksheet name
+  book = Spreadsheet.open(filename)
 
-hh = {}
-i = 0
+                                          puts "\n===>> Файл #{filename} найден"
+  sheetename = 'SAP-21'                                       
+  sheet1 = book.worksheet(sheetename) # can use an index or worksheet name
 
-sheet1.each do |row|
+                                          puts "\n===>> Вкладка #{sheetename} найдена"
+  hh = {}
+  i = 0
+                                          puts "\n===>> Начинаю считывание данных ..."
+  sheet1.each do |row|
 
-  break if row[0].nil? # if first cell empty
+    break if row[0].nil? # if first cell empty
 
-  arr = row.join('\t').split('\t')
+    data_row = row.join('\t').split('\t')
+    
+    if data_row[0][0] == '0'  # Если это строка структуры
+      if i >= 100
+        n_i = 3
+      elsif i >= 10
+        n_i = 2 
+      elsif i>= 1
+        n_i = 1
+      end  
+      if i != 0 then puts " = "+"_"*(3-n_i)+"#{i} шт." 
+      else           puts
+      end    
+      code__ = data_row[0]
+      spp___ = data_row[2]
+      n_c = 15-code__.size
+      n_s = 40-spp___.size
+      print "#{code__}"+"_"*n_c+"\t#{spp___}"+"_"*n_s
+      i = 0
 
- # puts arr.inspect
-  
-  if arr[0][0] == '0'  # Если это строка структуры
-    code__ = arr[0]
-    spp___ = arr[2]
-  else                 # Иначе это строка заказа
-    nomz_r = arr[0]
-    nomz_z = arr[1]
-    name__ = arr[2]
-    __ei__ = arr[3]
-    date_1 = arr[4]
-    date_2 = arr[5]
-    atm___ = arr[6]
-    hh = {
-      'code__' => code__, 'spp___' => spp___, 'nomz_r' => nomz_r, 'nomz_z' => nomz_z, 
-      'name__' => name__, '__ei__' => __ei__, 'date_1' => date_1, 'date_2' => date_1,
-      'atm___' => atm___, 
-    }
-    i += 1
-    print "#{i} = "
+    else                 # Иначе это строка заказа
+       @db.execute 'INSERT INTO sap_data 
+          (
+            code,
+            spp,
+            numz_r,
+            numz_z,
+            names,
+            ei,
+            date1,
+            date2,
+            atm
+          ) 
+          VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )', 
+          [
+                   code__, # code_spp   '01.01.01.01.'
+                   spp___, # name_spp   'Ручная расчистка'
+              data_row[0], # number R   'P04410062382.'
+              data_row[1], # number Z   '9815559'
+              data_row[2], # code_name  'Ручная расчистка ВЛ Пом-Тюр (09)'
+              data_row[3], # ie         'ГА'
+              data_row[4], # start      '01.09.2020'
+              data_row[5], # stop       '30.09.2020'
+              data_row[6]  # atm        '11.4' 
+          ]
+      i += 1
+    end
+
   end
+  puts
   puts "Ready. Please press Enter key"
   gets
 
