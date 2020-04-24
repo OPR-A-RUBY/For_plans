@@ -3,6 +3,7 @@
 *.sqlite
 silovoe_ps.xls
 spp_all.xls
+control_nom.xls
 /.config
 /coverage/
 /InstalledFiles
