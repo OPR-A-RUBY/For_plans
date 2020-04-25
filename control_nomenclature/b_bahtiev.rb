@@ -1,4 +1,8 @@
 # 
+def find_ps arr
+  #include?
+end
+
 def create_file_from_bahtiev
   
   sel = @db.execute 'SELECT name FROM sap_data WHERE code = "01.02.04.10."'
@@ -7,8 +11,9 @@ def create_file_from_bahtiev
 
   sel.each do |row_record|
 
-    puts row_record.inspect
-    gets
+    arr = row_record.inspect
+    
+
 
     # arr = row_record.split(/ /)
 
