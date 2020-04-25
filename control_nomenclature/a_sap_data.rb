@@ -11,11 +11,12 @@ def create_sap_data_table # ____________________________________________________
                "spp" TEXT,
             "numz_r" TEXT,
             "numz_z" TEXT,
-             "names" TEXT,
+              "name" TEXT,
                 "ei" TEXT,
              "date1" TEXT,
              "date2" TEXT,
-               "atm" TEXT
+               "atm" TEXT,
+                "ps" TEXT
         )'
   @db.execute 'DELETE FROM SAP_DATA'
 end
@@ -34,10 +35,10 @@ def input_sap_data hh     # ____________________________________________________
     data_row = row.join('\t').split('\t')
     
     if data_row[0][0] == '0'  # Если это строка структуры
-      output_i i
+      puts output_i(i)
       @code__ = data_row[0]               # Запоминаем код СПП-элемента
       @spp___ = data_row[2]               # ... и его название 
-      output_c_s @code__, @spp___
+      print output_c_s(@code__, @spp___)
       i = 0
 
     else                      # Иначе это строка заказа
@@ -47,7 +48,7 @@ def input_sap_data hh     # ____________________________________________________
             spp,
             numz_r,
             numz_z,
-            names,
+            name,
             ei,
             date1,
             date2,
@@ -59,7 +60,7 @@ def input_sap_data hh     # ____________________________________________________
                   @spp___, # name_spp   'Ручная расчистка'
               data_row[0], # number R   'P04410062382.'
               data_row[1], # number Z   '9815559'
-              data_row[2], # code_name  'Ручная расчистка ВЛ Пом-Тюр (09)'
+              data_row[2], # name       'Ручная расчистка ВЛ Пом-Тюр (09)'
               data_row[3], # ie         'ГА'
               data_row[4], # start      '01.09.2020'
               data_row[5], # stop       '30.09.2020'

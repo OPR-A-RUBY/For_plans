@@ -8,14 +8,15 @@ def output_i i
   elsif i>= 1
     n_i = 1
   end  
-  if i != 0 then puts " = "+"_"*(3-n_i)+"#{i} шт." 
-  else           puts
+  if i != 0 then out = " = "+"_"*(3-n_i)+"#{i} шт." 
+  else           out = ''
   end
+  return out
 end    
 # --------------------------------------------------------------------------
 def output_c_s code__, spp___  
   n_c = 15-code__.size
   n_s = 40-spp___.size
-  print "#{code__}"+"_"*n_c+"\t#{spp___}"+"_"*n_s
+  return "#{code__}"+"_"*n_c+"\t#{spp___}"+"_"*n_s
 end
 # --------------------------------------------------------------------------

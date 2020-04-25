@@ -1,44 +1,54 @@
 # ====================================================================================================
-#                                                             Это TEST для таблици "enet-structure-ps" 
+#                                                             Это TEST для проверки номенклатуры 
 # ====================================================================================================
-
-# _________________________________________________________________ ENET-STRUCTURE-PS ____ TABL ______
-#         id - идентификатор
-#       year - год планирования              (integer)    - 2021
-#       name - наименование строки           (text)       - Ремонт разъединителей 110 кВ
-#  code_name - код строки                    (text)       - '01.02.05.03.'
-#      level - уровень вложенности           (integer)    - 4
-#     flag_r - признак расчётной строки      (bolean)     - true
-# code_color - код расцвктки                 (text)       - 'wait'
-#         sp - структурное подразделение     (text)       - 'sps'
-#        eiz - единица измерения             (text)       - 'шт.'
-#       code - код многомиллиардный          (text)       - 001-002-001-003-000
-#
 
 require 'sqlite3'
 require 'spreadsheet'
 
-require_relative 'helper_control_nomenclature'
-require_relative 'a_control_nomenclature'
-require_relative 'a_control_remonte'
+require_relative 'helper'
+require_relative 'a_sap_data'
+require_relative 'a_plan_ps'
+
+require_relative 'b_demidov'
+require_relative 'b_bahtiev'
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 file_name = 'development.sqlite'
 
 @db = SQLite3::Database.new file_name
-  
-  create_sap_data_table
-    #
-    hh = {:filename => 'control_nom.xls', :sheetename => 'SAP-21'}
-    input_sap_data hh
 
-  create_remont_table
-    #
-    hh = {:filename => 'kr-21.xls', :sheetename => 'kr-data'}
-    input_remont hh
-    #
-    hh = {:filename => 'tr-21.xls', :sheetename => 'tr-data'}
-    input_remont hh 
-        
+loop do 
+  
+  puts  'Для ввода ДАННЫХ из SAP АСУ ТОиР введите _ 0'
+  puts  'Для ввода МНОГОЛЕТКИ по ПС введите _______ 2'
+  print 'Иначе начинаем обработку _________________ '
+  u = gets.chomp 
+
+  if u == '0' 
+    create_sap_data_table # ______________________________________ ДАННЫЕ ИЗ SAP АСУ ТОиР ______
+      #
+      hh = {:filename => 'control_nom.xls', :sheetename => 'SAP-21'}
+      input_sap_data hh
+
+  elsif u == '2'    
+    create_remont_table   # ______________________________________ ДАННЫЕ ИЗ МНОГОЛЕТКИ ________
+      #
+      hh = {:filename => 'kr-21.xls', :sheetename => 'kr-data'}
+      input_remont hh
+      #
+      hh = {:filename => 'tr-21.xls', :sheetename => 'tr-data'}
+      input_remont hh 
+
+  else                    # __________________________________________ ОБРАБОТКА ДАННЫХ ________
+    @path = 'files-objects/'
+    create_file_from_demidov
+    
+    create_file_from_bahtiev  
+  end
+
+end
+
 @db.close
+
+puts "Программа закончилась."
