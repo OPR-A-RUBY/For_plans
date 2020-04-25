@@ -18,7 +18,9 @@
 require 'sqlite3'
 require 'spreadsheet'
 
+require_relative 'helper_control_nomenclature'
 require_relative 'a_control_nomenclature'
+require_relative 'a_control_remonte'
 
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -28,6 +30,10 @@ File.delete(file_name) if File.exist?(file_name)
 
 @db = SQLite3::Database.new file_name
 
-  input_sap_data
+  #input_sap_data
+
+  #input_tek_rem
+
+  input_kap_rem
         
 @db.close

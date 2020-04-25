@@ -30,7 +30,7 @@ def input_sap_data
 
                                           puts "\n===>> Вкладка #{sheetename} найдена"
   hh = {}
-  i = 0
+  i = -2
                                           puts "\n===>> Начинаю считывание данных ..."
   sheet1.each do |row|
 
@@ -39,21 +39,10 @@ def input_sap_data
     data_row = row.join('\t').split('\t')
     
     if data_row[0][0] == '0'  # Если это строка структуры
-      if i >= 100
-        n_i = 3
-      elsif i >= 10
-        n_i = 2 
-      elsif i>= 1
-        n_i = 1
-      end  
-      if i != 0 then puts " = "+"_"*(3-n_i)+"#{i} шт." 
-      else           puts
-      end    
+      output_i i
       code__ = data_row[0]
       spp___ = data_row[2]
-      n_c = 15-code__.size
-      n_s = 40-spp___.size
-      print "#{code__}"+"_"*n_c+"\t#{spp___}"+"_"*n_s
+      output_c_s code__, spp___
       i = 0
 
     else                 # Иначе это строка заказа
