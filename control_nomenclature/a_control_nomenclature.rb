@@ -1,9 +1,8 @@
 # Проверка соответствия номенклатуры
 #
 #
-
-def input_sap_data
-
+def create_sap_data_table # _____________________________________________________________________________
+  @db.execute 'DROP TABLE SAP_DATA'
   @db.execute 'CREATE TABLE IF NOT EXISTS       
         "sap_data" 
         (
@@ -18,34 +17,30 @@ def input_sap_data
              "date2" TEXT,
                "atm" TEXT
         )'
-                                          puts "\n===>> Таблица создана - 'sap_data'" 
+  @db.execute 'DELETE FROM SAP_DATA'
+end
 
-  filename = "control_nom.xls"    
+def input_sap_data hh     # _____________________________________________________________________________
 
-  book = Spreadsheet.open(filename)
-
-                                          puts "\n===>> Файл #{filename} найден"
-  sheetename = 'SAP-21'                                       
-  sheet1 = book.worksheet(sheetename) # can use an index or worksheet name
-
-                                          puts "\n===>> Вкладка #{sheetename} найдена"
+  book = Spreadsheet.open(hh[:filename])
+  sheet1 = book.worksheet(hh[:sheetename]) # can use an index or worksheet name
   hh = {}
   i = -2
-                                          puts "\n===>> Начинаю считывание данных ..."
+  j = -2
+  puts "\n===>> Начинаю считывание данных ..."
   sheet1.each do |row|
-
     break if row[0].nil? # if first cell empty
 
     data_row = row.join('\t').split('\t')
     
     if data_row[0][0] == '0'  # Если это строка структуры
       output_i i
-      code__ = data_row[0]
-      spp___ = data_row[2]
-      output_c_s code__, spp___
+      @code__ = data_row[0]               # Запоминаем код СПП-элемента
+      @spp___ = data_row[2]               # ... и его название 
+      output_c_s @code__, @spp___
       i = 0
 
-    else                 # Иначе это строка заказа
+    else                      # Иначе это строка заказа
        @db.execute 'INSERT INTO sap_data 
           (
             code,
@@ -60,8 +55,8 @@ def input_sap_data
           ) 
           VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )', 
           [
-                   code__, # code_spp   '01.01.01.01.'
-                   spp___, # name_spp   'Ручная расчистка'
+                  @code__, # code_spp   '01.01.01.01.'
+                  @spp___, # name_spp   'Ручная расчистка'
               data_row[0], # number R   'P04410062382.'
               data_row[1], # number Z   '9815559'
               data_row[2], # code_name  'Ручная расчистка ВЛ Пом-Тюр (09)'
@@ -70,12 +65,11 @@ def input_sap_data
               data_row[5], # stop       '30.09.2020'
               data_row[6]  # atm        '11.4' 
           ]
-      i += 1
+      i += 1  # Счётчик заказов в теущем СПП-элементе
+      j += 1  # Счётчик заказов во всёх СПП-элементах (Весь план)
     end
-
   end
   puts
-  puts "Ready. Please press Enter key"
-  gets
+  puts "ЗАКОНЧЕО! #{hh[:filename]} == #{hh[:sheetename]} = #{j} заказов"
 
 end

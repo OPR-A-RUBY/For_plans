@@ -26,14 +26,19 @@ require_relative 'a_control_remonte'
 
 file_name = 'development.sqlite'
 
-File.delete(file_name) if File.exist?(file_name)
-
 @db = SQLite3::Database.new file_name
+  
+  create_sap_data_table
+    #
+    hh = {:filename => 'control_nom.xls', :sheetename => 'SAP-21'}
+    input_sap_data hh
 
-  #input_sap_data
-
-  #input_tek_rem
-
-  input_kap_rem
+  create_remont_table
+    #
+    hh = {:filename => 'kr-21.xls', :sheetename => 'kr-data'}
+    input_remont hh
+    #
+    hh = {:filename => 'tr-21.xls', :sheetename => 'tr-data'}
+    input_remont hh 
         
 @db.close
